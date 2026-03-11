@@ -17,6 +17,18 @@ pipeline {
             git credentialsId: 'GitHub', url: "https://github.com/${ORGANIZATION_NAME}/${SERVICE_NAME}"
          }
       }
+
+      stage('Debug Docker Access') {
+  steps {
+    sh '''
+      whoami
+      id
+      ls -l /var/run/docker.sock || true
+      docker version || true
+      docker ps || true
+    '''
+  }
+}
       stage('Build') {
          steps {
             sh '''mvn clean package'''
